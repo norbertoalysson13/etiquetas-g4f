@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Etiquetas G4F Editáveis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .controles {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .btn-imprimir {
+            background-color: #28a745;
+        }
+        .btn-imprimir:hover {
+            background-color: #218838;
+        }
+        
+        .grid-etiquetas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .etiqueta-wrapper {
+            position: relative;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Título Editável */
+        .titulo-editavel {
+            font-size: 24px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-family: 'Arial Black', Impact, Arial, sans-serif;
+            outline: none;
+            color: #222;
+        }
+        
+        /* Container com a borda grossa da imagem */
+        .etiqueta-container {
+            border: 4px solid #222;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            border: 1px solid #222;
+            padding: 8px;
+            vertical-align: top;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+        }
+        tr td:first-child { border-left: none; }
+        tr td:last-child { border-right: none; }
+        tr:last-child td { border-bottom: none; }
+        
+        .fonte-mono {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+        }
+        
+        /* Áreas de edição (Azuladas na tela, transparentes na impressão) */
+        [contenteditable="true"] {
+            background-color: #e6f0ff;
+            outline: none;
+            display: inline-block;
+        }
+        .titulo-editavel[contenteditable="true"] {
+            background-color: transparent;
+            border-bottom: 2px dashed #007bff;
+        }
+        
+        .input-box {
+            width: 100%;
+            min-height: 30px;
+            margin-top: 5px;
+        }
+        .input-inline {
+            min-width: 120px;
+            min-height: 22px;
+        }
+
+        .btn-remover {
+            display: block;
+            width: 100%;
+            background: #ff4d4d;
+            color: white;
+            text-align: center;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
+        
+        /* Oculta os botões e cores de fundo na hora de imprimir */
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            .controles, .btn-remover, .instrucoes {
+                display: none !important;
+            }
+            .grid-etiquetas {
+                display: block;
+                max-width: 100%;
+            }
+            .etiqueta-wrapper {
+                width: 46%;
+                float: left;
+                margin: 2%;
+                padding: 0;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+            [contenteditable="true"] {
+                background-color: transparent !important;
+            }
+            .titulo-editavel[contenteditable="true"] {
+                border-bottom: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="instrucoes" style="text-align: center; color: #555; margin-bottom: 15px;">
+    <h2>Painel de Etiquetas - Formato G4f</h2>
+    <p>👉 Clique no <b>Título</b> ou nas áreas com <b>fundo azul</b> para editar.</p>
+</div>
+
+<div class="controles">
+    <button onclick="adicionarEtiqueta()">➕ Adicionar Nova Etiqueta</button>
+    <button class="btn-imprimir" onclick="window.print()">🖨️ Imprimir Etiquetas</button>
+</div>
+
+<div class="grid-etiquetas" id="grid">
+    <!-- Etiqueta Base -->
+    <div class="etiqueta-wrapper">
+        <div class="titulo-editavel" contenteditable="true">ETIQUETA CHAMADO DE GARANTIA - G4F</div>
+        <div class="etiqueta-container">
+            <table>
+                <tr>
+                    <td style="width: 40%;">
+                        Data: <br><span contenteditable="true" class="input-inline" style="width: 90%;"></span>
+                    </td>
+                    <td style="width: 60%;">
+                        Técnico: <br><span contenteditable="true" class="input-inline" style="width: 90%;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Tombo:<br>
+                        <span class="fonte-mono">FUJU</span> <span contenteditable="true" class="input-inline" style="width: 40%;"></span>
+                    </td>
+                    <td>
+                        Origem :<br>
+                        <div contenteditable="true" class="input-box"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        Chamado: <span contenteditable="true" class="input-inline" style="width: 60%;"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="fonte-mono">Defeito:</div>
+                        <div class="fonte-mono">Chamado:</div>
+                        <div contenteditable="true" class="input-box" style="min-height: 80px;"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <button class="btn-remover" onclick="removerEtiqueta(this)">🗑️ Remover esta etiqueta</button>
+    </div>
+</div>
+
+<script>
+    function adicionarEtiqueta() {
+        const grid = document.getElementById('grid');
+        const wrapper = document.querySelector('.etiqueta-wrapper');
+        const novaEtiqueta = wrapper.cloneNode(true);
+        grid.appendChild(novaEtiqueta);
+    }
+    
+    function removerEtiqueta(botao) {
+        const etiquetas = document.querySelectorAll('.etiqueta-wrapper');
+        if(etiquetas.length > 1) {
+            botao.parentElement.remove();
+        } else {
+            alert("Você precisa ter pelo menos uma etiqueta na tela!");
+        }
+    }
+</script>
+</body>
+</html>
